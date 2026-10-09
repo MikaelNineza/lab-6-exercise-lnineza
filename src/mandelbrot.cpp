@@ -229,8 +229,11 @@ sf::Vector2<double> MandelbrotViewer::windowPosToWorld(const sf::Vector2<double>
     // TODO: given a point in window coordinates (by default SFML gives these as sf::Vector2i,
     //       the caller will have to cast to sf::Vector2<double>), convert them into world
     //       coordinates in the context of the current world view.
-
-    return {};
+    sf::Vector2<double> worldSize = mMaxPointWorld - mMinPointWorld;
+    double fractionX = pWindow.x / mWindowSize.x;
+    double fractionY = pWindow.y / mWindowSize.y;
+    sf::Vector2<double> pWorld({mMinPointWorld.x + (fractionX * worldSize.x), mMinPointWorld.y - ((1-fractionY) * worldSize.y)});
+    return pWorld;
 }
 
 // drawIntoBuffer renders the current world view (bounded by mMinPointWorld and mMaxPointWorld)
@@ -248,8 +251,6 @@ void MandelbrotViewer::drawIntoViewBuffer(int maxIters) {
 // copyViewBufferToGPU takes the drawn CPU-side buffer mViewBuffer and copies it to the
 // GPU-side.
 void MandelbrotViewer::copyViewBufferToGPU() {
-    // TODO: load mViewBuffer from the CPU into mViewBufferGPU on the GPU.
-    // Hint: this is a one-liner.
     mViewBufferGPU.update(mViewBuffer);
 }
 
