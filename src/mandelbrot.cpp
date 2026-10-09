@@ -236,6 +236,21 @@ double MandelbrotViewer::mandelbrotSmooth(double cX, double cY, int maxIters) co
     //       If you use an escape radius of exactly 2, you will see some artifacts. Use a
     //       higher radius (this is still correct, since divergence -> infty), but with more
     //       computational cost (since you need to simulate more steps).
+    double zX = 0;
+    double zY = 0;
+
+    for (int n = 0; n < maxIters; ++n)  {
+        double zPrimeX = (zX * zX) - (zY * zY) + cX; 
+        double zPrimeY = (2.0 * zX * zY) + cY;
+        double modSquared = (zPrimeX * zPrimeX) + (zPrimeY * zPrimeY);
+        if (modSquared > 16.0) {
+            return n + 1 - ((std::log2(std::log2(std::sqrt(modSquared)))) / LOG_2);
+        }
+
+        zX = zPrimeX;
+        zY = zPrimeY;
+    }
+
     return std::numeric_limits<double>::infinity();  // get rid of this and add your code here...
 }
 
@@ -264,7 +279,7 @@ void MandelbrotViewer::drawIntoViewBuffer(int maxIters) {
     for (unsigned y = 0; y < mWindowSize.y; ++y) {
         for (unsigned x = 0; x < mWindowSize.x; ++x) {
             sf::Vector2<double> worldPos = windowPosToWorld({x + 0.5, y + 0.5});
-            double numOfIter = mandelbrot(worldPos.x, worldPos.y, maxIters);
+            double numOfIter = mandelbrotSmooth(worldPos.x, worldPos.y, maxIters);
 
             if (numOfIter != std::numeric_limits<double>::infinity()) {
                 mViewBuffer.setPixel({x, y}, CyclicGradient::DEFAULT_GRADIENT(numOfIter));
