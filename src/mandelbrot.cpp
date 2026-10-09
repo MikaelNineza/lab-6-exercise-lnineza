@@ -146,6 +146,10 @@ void MandelbrotViewer::handleZoom(double scrollDistance, sf::Vector2i mousePosit
     // In particular, the new world-coordinates rectangle will be of size
     // (worldViewFactor * (orig world width), worldViewFactor * (orig world height)),
     // and the user's cursor will point to exactly the same thing before and after the zoom.
+    sf::Vector2<double> worldMousePos = windowPosToWorld(static_cast<sf::Vector2<double>>(mousePosition));
+    // Rescaling with mouse as the center
+    mMinPointWorld = worldMousePos + ((mMinPointWorld - worldMousePos) * worldViewFactor);
+    mMaxPointWorld = worldMousePos + ((mMaxPointWorld - worldMousePos) * worldViewFactor);
 }
 
 void MandelbrotViewer::handleWindowResize(sf::Vector2u newSize)  // newSize is in window coords.
