@@ -231,7 +231,7 @@ double MandelbrotViewer::mandelbrot(double cX, double cY, int maxIters) const {
 }
 
 double MandelbrotViewer::mandelbrotSmooth(double cX, double cY, int maxIters) const {
-    // TODO: return the smoothed number of iterations it takes for z to escape a radius of greater
+    // return the smoothed number of iterations it takes for z to escape a radius of greater
     //       than 2, if it happens within maxIters iterations, otherwise return infinity.
     //       If you use an escape radius of exactly 2, you will see some artifacts. Use a
     //       higher radius (this is still correct, since divergence -> infty), but with more
@@ -269,7 +269,7 @@ sf::Vector2<double> MandelbrotViewer::windowPosToWorld(const sf::Vector2<double>
 // drawIntoBuffer renders the current world view (bounded by mMinPointWorld and mMaxPointWorld)
 // into mViewBuffer
 void MandelbrotViewer::drawIntoViewBuffer(int maxIters) {
-    // TODO: render into mViewBuffer using sf::Image's setPixel method, which has signature
+    // render into mViewBuffer using sf::Image's setPixel method, which has signature
     //          void sf::Image::setPixel(sf::Vector2u coords, sf::Color color)
     //       At each pixel, find the world coordinates corresponding to the **CENTER** of the pixel.
     //       Then, find the (possibly continuous) number of iterations it takes for z to escape

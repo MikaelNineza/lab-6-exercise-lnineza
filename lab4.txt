@@ -1,1 +1,10 @@
 Answer written questions here:
+1. Starting with a low number allows you to have a faster first frame because the computation is less heavy (50 per pixels)
+and then if the user doesn't move, it can make the view more correct in the next frames.
+
+2. Since rendering each pixel is independent of the other pixels, you can split the image into groups of rows (number depending
+on how many threads, cores or computer you're using), having each unit fill in the color of its pixel group and then return
+that group filled to the main unit which will put put the results back together and draw.
+
+3. If we sampled at the center of the 4 subpixels per pixel and averaged the colors instead, the result would be a pixel that
+represents the area better. However this would come at the cost of each pixel being 4 times more computationally costly.
