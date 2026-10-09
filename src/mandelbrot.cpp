@@ -200,6 +200,19 @@ void MandelbrotViewer::updateUIText(sf::Vector2i mouseWindowCoords) {
 double MandelbrotViewer::mandelbrot(double cX, double cY, int maxIters) const {
     // TODO: return the number of iterations it takes for z to escape a radius of 2,
     //       if it happens within maxIters iterations, otherwise return infinity.
+    double zX = 0;
+    double zY = 0;
+
+    for (int n = 0; n < maxIters; ++n)  {
+        double zPrimeX = (zX * zX) - (zY * zY) + cX; 
+        double zPrimeY = (2.0 * zX * zY) + cY;
+        if ((zPrimeX * zPrimeX) + (zPrimeY * zPrimeY) > 4.0) {
+            return n + 1;
+        }
+
+        zX = zPrimeX;
+        zY = zPrimeY;
+    }
 
     return std::numeric_limits<double>::infinity();  // get rid of this and add your code here...
 }
