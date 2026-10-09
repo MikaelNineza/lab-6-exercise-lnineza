@@ -184,7 +184,7 @@ void MandelbrotViewer::handleWindowResize(sf::Vector2u newSize)  // newSize is i
     // size
     //      Hint: (void)mViewBufferGPU.resize ... something ... this is a trivial one-liner.
     // The sprite will have an incorrect view into the texture after resize, so we update:
-    mViewBufferGPU.resize(newSize);
+    (void)mViewBufferGPU.resize(newSize);
     mViewSprite.setTextureRect(sf::IntRect({0, 0}, sf::Vector2i(newSize)));
     mWindowSize = newSize;  // update mWindowSize.
 }
@@ -247,7 +247,7 @@ sf::Vector2<double> MandelbrotViewer::windowPosToWorld(const sf::Vector2<double>
     sf::Vector2<double> worldSize = mMaxPointWorld - mMinPointWorld;
     double fractionX = pWindow.x / mWindowSize.x;
     double fractionY = pWindow.y / mWindowSize.y;
-    sf::Vector2<double> pWorld({mMinPointWorld.x + (fractionX * worldSize.x), mMinPointWorld.y - ((1-fractionY) * worldSize.y)});
+    sf::Vector2<double> pWorld({mMinPointWorld.x + (fractionX * worldSize.x), mMinPointWorld.y + ((1-fractionY) * worldSize.y)});
     return pWorld;
 }
 
@@ -261,8 +261,8 @@ void MandelbrotViewer::drawIntoViewBuffer(int maxIters) {
     //       the escape radius (using mandelbrotSmooth() or mandelbrot()). If it never escapes,
     //       color the pixel black, otherwise, pass the escape iteration number to
     //       CyclicGradient::DEFAULT_GRADIENT(n) to get a colour to set the pixel to.
-    for (int y = 0; y < mWindowSize.y; ++y) {
-        for (int x = 0; x < mWindowSize.x; ++x) {
+    for (unsigned y = 0; y < mWindowSize.y; ++y) {
+        for (unsigned x = 0; x < mWindowSize.x; ++x) {
             sf::Vector2<double> worldPos = windowPosToWorld({x + 0.5, y + 0.5});
             double numOfIter = mandelbrot(worldPos.x, worldPos.y, maxIters);
 
