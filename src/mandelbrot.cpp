@@ -167,6 +167,16 @@ void MandelbrotViewer::handleWindowResize(sf::Vector2u newSize)  // newSize is i
     //       was scaled in the respective dimension, such that the original view is only
     //       cropped/extended, not zoomed.
     // ... your code here...
+    sf::Vector2<double> worldCenter = {(mMaxPointWorld.x + mMinPointWorld.x) / 2.f, (mMaxPointWorld.y + mMinPointWorld.y) / 2.f};
+    sf::Vector2<double> oldSize = mMaxPointWorld - mMinPointWorld;
+
+    double ratioX = static_cast<double>(newSize.x) / static_cast<double>(mWindowSize.x);
+    double ratioY = static_cast<double>(newSize.y) / static_cast<double>(mWindowSize.y);
+
+    sf::Vector2<double> halfSize({(oldSize.x * ratioX) / 2, (oldSize.y * ratioY) / 2});
+    mMinPointWorld = worldCenter - halfSize;
+    mMaxPointWorld = worldCenter + halfSize;
+
 
     // update CPU-side image buffer size to have enough memory for all the pixels:
     mViewBuffer.resize(newSize);
@@ -174,6 +184,7 @@ void MandelbrotViewer::handleWindowResize(sf::Vector2u newSize)  // newSize is i
     // size
     //      Hint: (void)mViewBufferGPU.resize ... something ... this is a trivial one-liner.
     // The sprite will have an incorrect view into the texture after resize, so we update:
+    mViewBufferGPU.resize(newSize);
     mViewSprite.setTextureRect(sf::IntRect({0, 0}, sf::Vector2i(newSize)));
     mWindowSize = newSize;  // update mWindowSize.
 }
